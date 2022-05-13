@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ShowsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/shows', [ShowsController::class, 'index']);
+Route::get('/shows/create', [ShowsController::class, 'create']);
+Route::post('/shows/save', [ShowsController::class, 'store']);
