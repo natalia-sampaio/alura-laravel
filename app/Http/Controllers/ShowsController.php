@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Show;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Phan\AST\TolerantASTConverter\Shim;
+
+use function Sabre\Event\Promise\all;
 
 class ShowsController extends Controller
 {
@@ -22,11 +25,9 @@ class ShowsController extends Controller
 
     public function store(Request $request)
     {
-        $showName = $request->input('name');
-        $show = new Show();
-        $show->name = $showName;
-        $show->save();
+        Show::create($request->all());
+    
 
-        return redirect('/shows');
+        return to_route('series.index');
     }
 }
