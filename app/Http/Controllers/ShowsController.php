@@ -37,8 +37,8 @@ class ShowsController extends Controller
 
     public function update(Show $show, Request $request)
     {
-        $name = $request->input('name');
-        $show->update(['name' => $name]);
+        $show->fill($request->all());
+        $show->save();
 
         return to_route('shows.index')
         ->with('success.message', "Série '{$show->name}' atualizada com sucesso");
