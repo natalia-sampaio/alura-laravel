@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ShowsFormRequest;
 use App\Models\Show;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,7 @@ class ShowsController extends Controller
         return view('shows.create');
     }
 
-    public function store(Request $request)
+    public function store(ShowsFormRequest $request)
     {
         $show = Show::create($request->all());
 
@@ -35,7 +36,7 @@ class ShowsController extends Controller
         return view('shows.edit', ['show' => $show]);
     }
 
-    public function update(Show $show, Request $request)
+    public function update(Show $show, ShowsFormRequest $request)
     {
         $show->fill($request->all());
         $show->save();
