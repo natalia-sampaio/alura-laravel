@@ -10,7 +10,7 @@ class ShowsController extends Controller
 {
     public function index(Request $request)
     {
-        $shows = Show::query()->orderBy('name')->get();
+        $shows = Show::all();
         $successMessage = $request->session()->get('success.message');
         
         return view('shows.index')
