@@ -10,7 +10,9 @@
     <ul class="list-group">
         @foreach ($shows as $show)
         <li class="list-group-item d-flex justify-content-between align-items-center">
-            {{$show->name}}
+            <a href="{{route('seasons.index', $show->id)}}">
+                {{$show->name}}
+            </a>
             <span class="d-flex">
                 <a href="{{route('shows.edit', $show->id)}}" class="btn btn-outline-secondary btn-sm me-2">
                     Editar

@@ -16,10 +16,7 @@ return new class extends Migration
         Schema::create('seasons', function (Blueprint $table) {
             $table->id();
             $table->unsignedTinyInteger('number');
-            $table->foreignId('show_id')->constrained(); 
-            /*the line above is equivalent to the two lines bellow:
-            $table->unsignedBigInteger('series_id');
-            $table->foreign('show_id')->references('id')->on('shows'); */
+            $table->foreignId('show_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
