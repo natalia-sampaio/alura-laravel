@@ -13,6 +13,12 @@
     <div class="container">
         <h1>{{$title}}</h1>
 
+        @isset($successMessage)
+        <div class="alert alert-success">
+            {{$successMessage}}
+        </div>
+        @endisset
+
         @if ($errors->any())
         <div class="alert alert-danger">
             <ul>

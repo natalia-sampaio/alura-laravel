@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ShowsFormRequest;
-use App\Models\Episode;
-use App\Models\Season;
 use App\Models\Show;
+use App\Repositories\ShowsRepository;
 use Illuminate\Http\Request;
 
 class ShowsController extends Controller
 {
+    public function __construct(private ShowsRepository $repository)
+    {
+    }
+    
     public function index(Request $request)
     {
         $shows = Show::all();
@@ -27,29 +30,8 @@ class ShowsController extends Controller
 
     public function store(ShowsFormRequest $request)
     {
-        $show = Show::create($request->all());
-        /* this way I have less queries */
-        $seasons = [];
-        for($i = 1; $i <= $request->seasonsQty; $i++) {
-            $seasons[] = [
-                'show_id' => $show->id,
-                'number' => $i,
-            ];
-        }
-        Season::insert($seasons);
-
-        $episodes = [];
-        foreach ($show->seasons as $season) {
-            for ($j = 1; $j <= $request->episodesPerSeason; $j++) {
-                $episodes [] = [
-                    'season_id' => $season->id,
-                    'number' => $j,
-                ];
-            }
-        }
-        Episode::insert($episodes);
-
-
+        $show = $this->repository->add($request);
+        
         return to_route('shows.index')
             ->with('success.message', "Série '{$show->name}' adicionada com sucesso");
     }
