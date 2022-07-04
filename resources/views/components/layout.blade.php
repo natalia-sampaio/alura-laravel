@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{$title}}</title>
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/estilos.css') }}">
 </head>
 
 <body>
@@ -14,7 +15,18 @@
         <div class="container-fluid">
             <a href="{{route('shows.index')}}" class="navbar-brand">Home</a>
 
-            <a href="{{route('logout')}}">Sair</a>
+            @auth
+            <form action="{{route('logout')}}" method="post">
+                @csrf
+                <button class="btn btn-link">
+                    Sair
+                </button>
+            </form>
+            @endauth
+
+            @guest
+            <a href="{{route('login')}}" class="me-2">Entrar</a>
+            @endguest
         </div>
     </nav>
     <div class="container">

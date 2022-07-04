@@ -1,12 +1,15 @@
 <x-layout title="{{__('messages.app_name')}}" :success-message="$successMessage">
+    @auth
     <a href="{{route('shows.create')}}" class="btn btn-dark mb-2">Adicionar</a>
+    @endauth
 
     <ul class="list-group">
         @foreach ($shows as $show)
         <li class="list-group-item d-flex justify-content-between align-items-center">
-            <a href="{{route('seasons.index', $show->id)}}">
+            @auth<a href="{{route('seasons.index', $show->id)}}">@endauth
                 {{$show->name}}
-            </a>
+            @auth</a>@endauth
+            @auth
             <span class="d-flex">
                 <a href="{{route('shows.edit', $show->id)}}" class="btn btn-outline-secondary btn-sm me-2">
                     Editar
@@ -19,6 +22,7 @@
                     </button>
                 </form>
             </span>
+            @endauth
         </li>
         @endforeach
     </ul>
