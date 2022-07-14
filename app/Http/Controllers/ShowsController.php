@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ShowsFormRequest;
+use App\Mail\ShowCreated;
 use App\Models\Show;
+use App\Models\User;
 use App\Repositories\ShowsRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ShowsController extends Controller
 {
@@ -33,6 +36,18 @@ class ShowsController extends Controller
     {
         $show = $this->repository->add($request);
         
+        $userList = User::all();
+        foreach ($userList as $user) {
+            $email = new ShowCreated(
+                $show->name,
+                $show->id,
+                $request->seasonsQty,
+                $request->episodesPerSeason,
+            );
+            Mail::to($user)->send($email);
+            sleep(2);
+        }
+
         return to_route('shows.index')
             ->with('success.message', "Série '{$show->name}' adicionada com sucesso");
     }
