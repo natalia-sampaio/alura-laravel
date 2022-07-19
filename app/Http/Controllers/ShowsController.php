@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ShowCreated as EventsShowCreated;
 use App\Http\Requests\ShowsFormRequest;
 use App\Mail\ShowCreated;
 use App\Models\Show;
@@ -36,18 +37,12 @@ class ShowsController extends Controller
     public function store(ShowsFormRequest $request)
     {
         $show = $this->repository->add($request);
-        
-        $userList = User::all();
-        foreach ($userList as $index => $user) {
-            $email = new ShowCreated(
-                $show->name,
-                $show->id,
-                $request->seasonsQty,
-                $request->episodesPerSeason,
-            );
-            $when = now()->addSeconds($index * 5);
-            Mail::to($user)->later($when, $email);
-        }
+        EventsShowCreated::dispatch (
+            $show->name,
+            $show->id,
+            $request->seasonsQty,
+            $request->episodesPerSeason
+        );
 
         return to_route('shows.index')
             ->with('success.message', "Série '{$show->name}' adicionada com sucesso");
