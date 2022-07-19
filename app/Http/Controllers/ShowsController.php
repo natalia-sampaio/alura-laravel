@@ -7,6 +7,7 @@ use App\Mail\ShowCreated;
 use App\Models\Show;
 use App\Models\User;
 use App\Repositories\ShowsRepository;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -37,15 +38,15 @@ class ShowsController extends Controller
         $show = $this->repository->add($request);
         
         $userList = User::all();
-        foreach ($userList as $user) {
+        foreach ($userList as $index => $user) {
             $email = new ShowCreated(
                 $show->name,
                 $show->id,
                 $request->seasonsQty,
                 $request->episodesPerSeason,
             );
-            Mail::to($user)->send($email);
-            sleep(2);
+            $when = now()->addSeconds($index * 5);
+            Mail::to($user)->later($when, $email);
         }
 
         return to_route('shows.index')
