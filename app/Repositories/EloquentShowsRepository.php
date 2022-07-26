@@ -13,7 +13,10 @@ class EloquentShowsRepository implements ShowsRepository
     public function add(ShowsFormRequest $request): Show
     {
         return DB::transaction(function () use ($request) {
-            $show = Show::create($request->all());
+            $show = Show::create([
+                'name' => $request->name,
+                'cover' => $request->coverPath,
+            ]);
             $seasons = [];
             for ($i = 1; $i <= $request->seasonsQty; $i++) {
                 $seasons[] = [
