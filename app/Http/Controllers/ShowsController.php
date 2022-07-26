@@ -5,14 +5,9 @@ namespace App\Http\Controllers;
 use App\Events\ShowCreated as EventsShowCreated;
 use App\Http\Requests\ShowsFormRequest;
 use App\Jobs\DestroyCoverImage;
-use App\Mail\ShowCreated;
 use App\Models\Show;
-use App\Models\User;
 use App\Repositories\ShowsRepository;
-use DateTime;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 
 class ShowsController extends Controller
 {
@@ -38,8 +33,9 @@ class ShowsController extends Controller
 
     public function store(ShowsFormRequest $request)
     {
-        $coverPath = $request->file('cover')
-            ->store('shows_covers', 'public');
+        $coverPath = $request->hasFile('cover')
+            ? $request->file('cover')->store('shows_covers', 'public')
+            : null;
         $request->coverPath = $coverPath;
         $show = $this->repository->add($request);
         EventsShowCreated::dispatch (

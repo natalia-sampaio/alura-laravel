@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Events\ShowCreated;
-use App\Listeners\EmailUsersAboutSeriesCreated;
+use App\Listeners\EmailUsersAboutShowCreated;
 use App\Listeners\LogShowCreated;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -22,7 +22,7 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         ShowCreated::class => [
-            EmailUsersAboutSeriesCreated::class,
+            EmailUsersAboutShowCreated::class,
             LogShowCreated::class,
         ],
     ];
